@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senza Secondo Lavoro — Community L2 Reborn Legacy IT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121212;
+    --bg-panel:#1a1a1e;
+    --bg-panel-2:#1f1b2e;
+    --violet:#3d2f63;
+    --violet-deep:#211735;
+    --gold:#c9a227;
+    --gold-bright:#e8c565;
+    --text:#e9e4d6;
+    --text-dim:#a49c88;
+    --line: rgba(201,162,39,0.28);
+    --red:#8a3232;
+    --green:#4f7a4f;
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(61,47,99,0.35), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(201,162,39,0.08), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Cinzel',serif; letter-spacing:0.01em; margin:0;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  img{max-width:100%;}
+  :focus-visible{outline:2px solid var(--gold-bright); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  /* --- HUD panel signature element --- */
+  .hud{
+    position:relative;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:32px;
+  }
+  .hud::before, .hud::after,
+  .hud .c1, .hud .c2{
+    content:""; position:absolute; width:14px; height:14px;
+    border-color:var(--gold); border-style:solid; opacity:0.85;
+  }
+  .hud::before{ top:-1px; left:-1px; border-width:2px 0 0 2px; }
+  .hud::after{ top:-1px; right:-1px; border-width:2px 2px 0 0; }
+  .hud .c1{ bottom:-1px; left:-1px; border-width:0 0 2px 2px; }
+  .hud .c2{ bottom:-1px; right:-1px; border-width:0 2px 2px 0; }
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--gold); display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); display:inline-block;}
+
+  /* stamina-bar divider, used as the signature motif throughout */
+  .stamina{
+    height:6px; width:100%; border-radius:99px;
+    background:#2a2a30;
+    border:1px solid rgba(201,162,39,0.25);
+    overflow:hidden; position:relative;
+  }
+  .stamina i{
+    display:block; height:100%;
+    background:linear-gradient(90deg, var(--violet), var(--gold));
+  }
+
+  /* --- Nav --- */
+  header.nav{
+    position:sticky; top:0; z-index:40;
+    background:rgba(18,18,18,0.85); backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .nav-inner{
+    max-width:1120px; margin:0 auto; padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Cinzel',serif; font-weight:700; font-size:18px;}
+  .logo .mark{
+    width:26px; height:26px; border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold); font-size:13px; transform:rotate(45deg);
+  }
+  .logo .mark span{transform:rotate(-45deg);}
+  nav.links{display:flex; gap:28px; font-size:14px; color:var(--text-dim);}
+  nav.links a:hover{color:var(--gold-bright);}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+    letter-spacing:0.04em; text-transform:uppercase;
+    padding:12px 22px; border-radius:var(--radius);
+    text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-gold{background:linear-gradient(180deg, var(--gold-bright), var(--gold)); color:#1a1400; box-shadow:0 6px 24px rgba(201,162,39,0.25);}
+  .btn-ghost{border-color:rgba(255,255,255,0.18); color:var(--text);}
+  .btn-sm{padding:9px 16px; font-size:12px;}
+
+  /* --- Hero --- */
+  .hero{padding:88px 0 64px; position:relative;}
+  .hero-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold-bright); border:1px solid var(--line); padding:6px 12px; border-radius:99px; margin-bottom:26px;
+  }
+  .hero-badge .dot{width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green);}
+  .hero h1{
+    font-size:clamp(40px, 6vw, 68px); line-height:1.05; font-weight:700;
+    max-width:780px;
+  }
+  .hero h1 em{font-style:normal; color:var(--gold-bright);}
+  .hero p.sub{
+    max-width:560px; color:var(--text-dim); font-size:17px; margin-top:22px;
+  }
+  .hero-actions{display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; align-items:center;}
+  .hero-actions .hint{font-size:13px; color:var(--text-dim); font-family:'JetBrains Mono',monospace;}
+
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:start; margin-top:56px;}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+
+  .countdown-panel .label{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em;
+  }
+  .countdown-nums{display:flex; gap:18px; margin-top:16px; flex-wrap:wrap;}
+  .countdown-nums div{text-align:center;}
+  .countdown-nums .num{font-family:'JetBrains Mono',monospace; font-size:34px; font-weight:700; color:var(--gold-bright);}
+  .countdown-nums .u{font-size:10px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase;}
+
+  /* --- Section shell --- */
+  section{padding:72px 0;}
+  .section-head{max-width:640px; margin-bottom:42px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,36px); margin-top:14px;}
+  .section-head p{color:var(--text-dim); margin-top:12px; font-size:15.5px;}
+
+  /* --- Valori cards --- */
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media(max-width:860px){.grid-3{grid-template-columns:1fr;}}
+  .value-card{padding:26px;}
+  .value-card .ico{font-size:22px; margin-bottom:14px; display:block;}
+  .value-card h3{font-family:'Inter',sans-serif; font-weight:700; font-size:17px; color:var(--gold-bright);}
+  .value-card p{color:var(--text-dim); font-size:14.5px; margin-top:8px;}
+
+  /* profilo bullet */
+  .profilo{margin-top:44px; padding:30px;}
+  .profilo h3{font-family:'Cinzel',serif; font-size:19px; color:var(--gold-bright); margin-bottom:16px;}
+  .profilo ul{margin:0; padding:0; list-style:none; display:grid; gap:10px;}
+  .profilo li{display:flex; gap:10px; color:var(--text-dim); font-size:14.5px;}
+  .profilo li::before{content:"›"; color:var(--gold); font-weight:700;}
+
+  /* --- Orari / schedule --- */
+  .schedule-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media(max-width:760px){.schedule-grid{grid-template-columns:1fr;}}
+  .schedule-row{display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06);}
+  .schedule-row:last-child{border-bottom:none;}
+  .schedule-row .day{font-size:14px; color:var(--text-dim);}
+  .schedule-row .time{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--gold-bright);}
+
+  .class-tags{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;}
+  .class-tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 12px;
+    border:1px solid var(--line); border-radius:99px; color:var(--gold-bright);
+    background:rgba(201,162,39,0.05);
+  }
+
+  /* --- Guide cards --- */
+  .guide-card{padding:24px; display:flex; flex-direction:column; height:100%;}
+  .guide-card .tag{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold); text-transform:uppercase; letter-spacing:0.08em;}
+  .guide-card h3{font-size:17px; margin-top:10px; font-family:'Inter',sans-serif; font-weight:700;}
+  .guide-card p{color:var(--text-dim); font-size:14px; margin-top:8px; flex-grow:1;}
+  .guide-card .go{margin-top:16px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--gold-bright); text-decoration:none;}
+
+  /* --- Recruiting form --- */
+  .recruit{display:grid; grid-template-columns:1fr 1fr; gap:44px;}
+  @media(max-width:860px){.recruit{grid-template-columns:1fr;}}
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-family:'JetBrains Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-dim); margin-bottom:8px;}
+  .field input, .field select{
+    width:100%; background:#141417; border:1px solid rgba(255,255,255,0.14);
+    color:var(--text); padding:12px 14px; border-radius:var(--radius); font-family:'Inter',sans-serif; font-size:14px;
+  }
+  .field input:focus, .field select:focus{border-color:var(--gold);}
+  .discord-box{padding:28px;}
+  .discord-box .online{display:flex; align-items:center; gap:8px; margin-top:16px; font-size:14px; color:var(--text-dim);}
+  .discord-box .online .dot{width:8px; height:8px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green);}
+  .avatars{display:flex; margin-top:14px;}
+  .avatars span{
+    width:34px; height:34px; border-radius:50%; background:var(--violet);
+    border:2px solid var(--bg-panel); margin-left:-10px; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold-bright);
+  }
+  .avatars span:first-child{margin-left:0;}
+
+  footer{border-top:1px solid rgba(255,255,255,0.08); padding:40px 0; margin-top:20px;}
+  .footer-inner{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  .footer-inner p{color:var(--text-dim); font-size:13px; margin:0;}
+  .badge-wl{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    border:1px solid var(--line); padding:8px 14px; border-radius:99px; color:var(--gold-bright);
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="mark"><span>L2</span></span> Senza Secondo Lavoro</div>
+    <nav class="links">
+      <a href="#valori">Chi Siamo</a>
+      <a href="#orari">Orari &amp; Party</a>
+      <a href="#guide">Guide</a>
+      <a href="#unisciti">Unisciti</a>
+    </nav>
+    <a href="#" class="btn btn-gold btn-sm">Discord</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-badge"><span class="dot"></span> L2 REBORN LEGACY · COMMUNITY ITALIANA</div>
+    <h1>Meno grind, <em>più compagnia.</em></h1>
+    <p class="sub">La community italiana su L2Reborn Legacy per chi lavora, vuole giocare in gruppo e ottimizzare il proprio tempo libero. Party organizzati, zero drammi, zero obblighi.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-gold">Entra nel Discord</a>
+      <a href="#unisciti" class="btn btn-ghost">Chi sei tu?</a>
+      <span class="hint">apertura server → novembre</span>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hud">
+        <div class="c1"></div><div class="c2"></div>
+        <p class="eyebrow">Il profilo che cerchiamo</p>
+        <h3 style="margin-top:14px; font-size:19px; color:var(--gold-bright);">Ti riconosci?</h3>
+        <ul style="margin:18px 0 0; padding:0; list-style:none; display:grid; gap:11px;">
+          <li style="display:flex; gap:10px; color:var(--text-dim); font-size:14.5px;"><span style="color:var(--gold);">›</span> Hai più di 25 anni e un lavoro, non un secondo turno da giocare</li>
+          <li style="display:flex; gap:10px; color:var(--text-dim); font-size:14.5px;"><span style="color:var(--gold);">›</span> Cerchi una CP o un gruppo stabile per la sera</li>
+          <li style="display:flex; gap:10px; color:var(--text-dim); font-size:14.5px;"><span style="color:var(--gold);">›</span> Vuoi fare PvP e Boss senza trasformarlo in un incubo</li>
+          <li style="display:flex; gap:10px; color:var(--text-dim); font-size:14.5px;"><span style="color:var(--gold);">›</span> Preferisci 3 ore ben spese a 6 ore di farm a vuoto</li>
+        </ul>
+      </div>
+
+      <div class="hud countdown-panel">
+        <div class="c1"></div><div class="c2"></div>
+        <p class="label">Apertura ufficiale del server tra</p>
+        <div class="countdown-nums" id="countdown">
+          <div><div class="num" id="cd-days">--</div><div class="u">giorni</div></div>
+          <div><div class="num" id="cd-hours">--</div><div class="u">ore</div></div>
+          <div><div class="num" id="cd-min">--</div><div class="u">min</div></div>
+          <div><div class="num" id="cd-sec">--</div><div class="u">sec</div></div>
+        </div>
+        <div class="stamina" style="margin-top:22px;"><i style="width:38%;"></i></div>
+        <p style="font-size:12px; color:var(--text-dim); margin-top:10px; font-family:'JetBrains Mono',monospace;">stamina community: reclutamento in corso</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="valori">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Perché noi</p>
+      <h2>I nostri valori</h2>
+      <p>Non un team esport tryhard: un club esclusivo ma accogliente, per chi ha già una vita fuori dal gioco.</p>
+    </div>
+    <div class="grid-3">
+      <div class="hud value-card"><div class="c1"></div><div class="c2"></div>
+        <span class="ico">🛡️</span>
+        <h3>No Drama, No Obblighi</h3>
+        <p>Nessuno ti caccia se salti un giorno per lavoro o famiglia. Giochi quando puoi, non quando "devi".</p>
+      </div>
+      <div class="hud value-card"><div class="c1"></div><div class="c2"></div>
+        <span class="ico">⏱️</span>
+        <h3>Efficienza nelle ore serali</h3>
+        <p>Sfruttiamo al massimo lo Stamina System di Reborn: niente farm a vuoto, solo party organizzati dalle 21:00.</p>
+      </div>
+      <div class="hud value-card"><div class="c1"></div><div class="c2"></div>
+        <span class="ico">🗳️</span>
+        <h3>Decisioni condivise, non un capo</h3>
+        <p>Non c'è un padrone del gruppo: c'è un direttivo eletto, che ascolta e indirizza. Ogni scelta importante — anche se e come diventare un clan o entrare in un'alleanza — la facciamo insieme.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="orari">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Organizzazione</p>
+      <h2>I nostri orari &amp; party</h2>
+      <p>Struttura chiara, senza rigidità: sai sempre quando si gioca e cosa serve al gruppo.</p>
+    </div>
+    <div class="schedule-grid">
+      <div class="hud"><div class="c1"></div><div class="c2"></div>
+        <p class="eyebrow">Fascia oraria di punta</p>
+        <div style="margin-top:18px;">
+          <div class="schedule-row"><span class="day">Lunedì – Venerdì</span><span class="time">21:00 – 00:30</span></div>
+          <div class="schedule-row"><span class="day">Weekend</span><span class="time">Eventi / Olimpiadi / Raid</span></div>
+        </div>
+      </div>
+      <div class="hud"><div class="c1"></div><div class="c2"></div>
+        <p class="eyebrow">CP Casual/Flex — cercasi</p>
+        <p style="color:var(--text-dim); font-size:14px; margin-top:14px;">Classi più ricercate per completare i party serali:</p>
+        <div class="class-tags">
+          <span class="class-tag">Elven Elder</span>
+          <span class="class-tag">Shillien Elder</span>
+          <span class="class-tag">Swordsinger</span>
+          <span class="class-tag">Bishop / Deacon</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Value content</p>
+      <h2>Guide &amp; Calcolatore Stamina</h2>
+      <p>Contenuti in italiano per ottimizzare al massimo le tue 4 ore di gioco serale su Reborn Legacy.</p>
+    </div>
+    <div class="grid-3">
+      <div class="hud guide-card"><div class="c1"></div><div class="c2"></div>
+        <span class="tag">Strumento</span>
+        <h3>Calcolatore Stamina</h3>
+        <p>Scopri come spendere al 100% la tua barra stamina in una sessione da 3-4 ore.</p>
+        <a href="#" class="go">Apri il calcolatore →</a>
+      </div>
+      <div class="hud guide-card"><div class="c1"></div><div class="c2"></div>
+        <span class="tag">Guida</span>
+        <h3>Classi C1 – Interlude</h3>
+        <p>Panoramica semplice delle classi più forti per il meta di Reborn Legacy.</p>
+        <a href="#" class="go">Leggi la guida →</a>
+      </div>
+      <div class="hud guide-card"><div class="c1"></div><div class="c2"></div>
+        <span class="tag">Guida</span>
+        <h3>Livellare senza perdere tempo</h3>
+        <p>I percorsi di leveling più efficienti per chi ha poche ore a disposizione.</p>
+        <a href="#" class="go">Leggi la guida →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="unisciti">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Recruiting</p>
+      <h2>Unisciti alla community</h2>
+      <p>Pochi campi, nessuna burocrazia. Compila e fatti sentire su Discord per il colloquio vocale.</p>
+    </div>
+    <div class="recruit">
+      <form class="hud" onsubmit="event.preventDefault(); alert('Form dimostrativo — collega questo bottone al tuo Discord o Google Form, vedi le istruzioni ricevute in chat.');">
+        <div class="c1"></div><div class="c2"></div>
+        <div class="field"><label for="nick">Nome / Nick</label><input id="nick" type="text" placeholder="es. Aeloria" required></div>
+        <div class="field"><label for="classe">Classe preferita</label>
+          <select id="classe">
+            <option>Non ancora deciso</option>
+            <option>Tank</option>
+            <option>Supporto (Healer/Buffer)</option>
+            <option>DD Fisico</option>
+            <option>DD Magico</option>
+            <option>Dagger</option>
+          </select>
+        </div>
+        <div class="field"><label for="disp">Disponibilità oraria indicativa</label><input id="disp" type="text" placeholder="es. sere feriali dopo le 21:00"></div>
+        <button type="submit" class="btn btn-gold" style="margin-top:8px; border:none; width:100%; justify-content:center;">Invia candidatura</button>
+      </form>
+
+      <div class="hud discord-box">
+        <div class="c1"></div><div class="c2"></div>
+        <p class="eyebrow">Discord live</p>
+        <h3 style="margin-top:12px; font-size:18px;">Canale "Sera / Party"</h3>
+        <div class="online"><span class="dot"></span> 12 connessi ora</div>
+        <div class="avatars">
+          <span>AE</span><span>KZ</span><span>ML</span><span>RS</span><span>+8</span>
+        </div>
+        <div class="stamina" style="margin-top:24px;"><i style="width:72%;"></i></div>
+        <p style="font-size:12px; color:var(--text-dim); margin-top:10px; font-family:'JetBrains Mono',monospace;">party serale: 3/4 ruoli coperti</p>
+        <a href="#" class="btn btn-ghost btn-sm" style="margin-top:20px; width:100%; justify-content:center;">Vai al colloquio vocale →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <p>© 2026 Senza Secondo Lavoro — Community italiana L2 Reborn Legacy. Non affiliato a NCSoft o al team Reborn.</p>
+    <span class="badge-wl">100% Work &amp; Life Balanced</span>
+  </div>
+</footer>
+
+<script>
+  // Countdown — modifica la data qui sotto con la data reale di apertura del server
+  const targetDate = new Date("2026-11-01T21:00:00");
+  function updateCountdown(){
+    const now = new Date();
+    let diff = targetDate - now;
+    if(diff < 0) diff = 0;
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff / (1000*60*60)) % 24);
+    const m = Math.floor((diff / (1000*60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+    document.getElementById('cd-days').textContent = d;
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
